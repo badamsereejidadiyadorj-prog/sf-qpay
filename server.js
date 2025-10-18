@@ -142,5 +142,5 @@ app.post("/api/qpay/callback", async (req, res) => {
 });
 
 // ---------------------------
-const PORT = PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => console.log(`QPay Node server running on port ${PORT}`));
