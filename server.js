@@ -1,7 +1,6 @@
 // server.js
 require("dotenv").config();
 const express = require("express");
-const btoa = require("btoa"); // npm install btoa
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -28,7 +27,7 @@ async function getQpayToken() {
     const password = process.env.QPAY_CLIENT_SECRET;
     const credentials = `${username}:${password}`;
     const encodedCredentials = Buffer.from(credentials).toString("base64");
-    console.log(encodedCredentials);
+    console.log(username, password, encodedCredentials);
     const res = await fetch(`${QPAY_API_URL}/auth/token`, {
       method: "POST",
       headers: {
