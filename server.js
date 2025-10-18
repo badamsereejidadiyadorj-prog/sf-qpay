@@ -27,7 +27,7 @@ async function getQpayToken() {
     const clientId = process.env.QPAY_CLIENT_ID;
     const clientSecret = process.env.QPAY_CLIENT_SECRET;
     const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
-
+    console.log(encodedCredentials);
     const res = await fetch(`${QPAY_API_URL}/auth/token`, {
       method: "POST",
       headers: {
