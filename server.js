@@ -17,14 +17,17 @@ app.use(
 app.use(bodyParser.json());
 
 const QPAY_API_URL = "https://merchant.qpay.mn/v2";
+const QPAY_MERCHANT_ID = TUMEN_DUGUI;
+const QPAY_SECRET_KEY = FGUpC64V;
+const QPAY_INVOICE_CODE = TUMEN_DUGUI_INVOICE;
 
 // ---------------------------
 // 1. Get QPay Token
 // ---------------------------
 async function getQpayToken() {
   try {
-    const username = process.env.QPAY_CLIENT_ID;
-    const password = process.env.QPAY_CLIENT_SECRET;
+    const username = QPAY_MERCHANT_ID;
+    const password = QPAY_SECRET_KEY;
     const credentials = `${username}:${password}`;
     const encodedCredentials = Buffer.from(credentials).toString("base64");
     console.log(username, password, encodedCredentials);
@@ -61,7 +64,7 @@ app.post("/api/qpay/create", async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        invoice_code: process.env.QPAY_INVOICE_CODE,
+        invoice_code: QPAY_INVOICE_CODE,
         sender_invoice_no: invoiceNumber,
         invoice_receiver_code: invoiceReceiverCode,
         invoice_description: "Payment invoice",
@@ -139,5 +142,5 @@ app.post("/api/qpay/callback", async (req, res) => {
 });
 
 // ---------------------------
-const PORT = process.env.PORT || 3000;
+const PORT = PORT || 3000;
 app.listen(PORT, () => console.log(`QPay Node server running on port ${PORT}`));
