@@ -37,6 +37,7 @@ async function getQpayToken() {
     });
 
     const data = await res.json();
+    console.log(data);
     if (!data.access_token) throw new Error("Failed to get QPay token");
     return data.access_token;
   } catch (err) {
