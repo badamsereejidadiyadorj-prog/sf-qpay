@@ -24,9 +24,10 @@ const QPAY_API_URL = "https://merchant.qpay.mn/v2";
 // ---------------------------
 async function getQpayToken() {
   try {
-    const clientId = process.env.QPAY_CLIENT_ID;
-    const clientSecret = process.env.QPAY_CLIENT_SECRET;
-    const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
+    const username = process.env.QPAY_CLIENT_ID;
+    const password = process.env.QPAY_CLIENT_SECRET;
+    const credentials = `${username}:${password}`;
+    const encodedCredentials = Buffer.from(credentials).toString("base64");
     console.log(encodedCredentials);
     const res = await fetch(`${QPAY_API_URL}/auth/token`, {
       method: "POST",
