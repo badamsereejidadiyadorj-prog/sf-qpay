@@ -23,21 +23,26 @@ const QPAY_API_URL = "https://merchant.qpay.mn/v2";
 // 1. Get QPay Token
 // ---------------------------
 async function getQpayToken() {
-  const clientId = process.env.QPAY_CLIENT_ID;
-  const clientSecret = process.env.QPAY_CLIENT_SECRET;
-  const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
+  try {
+    const clientId = process.env.QPAY_CLIENT_ID;
+    const clientSecret = process.env.QPAY_CLIENT_SECRET;
+    const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
 
-  const res = await fetch(`${QPAY_API_URL}/auth/token`, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${encodedCredentials}`,
-      "Content-Type": "application/json",
-    },
-  });
+    const res = await fetch(`${QPAY_API_URL}/auth/token`, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${encodedCredentials}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  const data = await res.json();
-  if (!data.access_token) throw new Error("Failed to get QPay token");
-  return data.access_token;
+    const data = await res.json();
+    if (!data.access_token) throw new Error("Failed to get QPay token");
+    return data.access_token;
+  } catch (err) {
+    console.error("Error in getQpayToken:", err.stack || err);
+    throw err;
+  }
 }
 
 // ---------------------------
@@ -68,8 +73,10 @@ app.post("/api/qpay/create", async (req, res) => {
     const data = await qpayRes.json();
     res.json(data);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create invoice" });
+    console.error("Error in /api/qpay/create:", err.stack || err);
+    res
+      .status(500)
+      .json({ error: "Failed to create invoice", details: err.message });
   }
 });
 
@@ -91,8 +98,10 @@ app.get("/api/qpay/check/:invoiceId", async (req, res) => {
     const data = await qpayRes.json();
     res.json(data);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to check invoice" });
+    console.error("Error in /api/qpay/check/:invoiceId:", err.stack || err);
+    res
+      .status(500)
+      .json({ error: "Failed to check invoice", details: err.message });
   }
 });
 
@@ -104,7 +113,6 @@ app.post("/api/qpay/callback", async (req, res) => {
     const payload = req.body;
     console.log("QPay Callback Received:", payload);
 
-    // You can verify payment by calling checkInvoice
     const token = await getQpayToken();
     const qpayRes = await fetch(
       `${QPAY_API_URL}/invoice/${payload.invoice_id}`,
@@ -122,8 +130,10 @@ app.post("/api/qpay/callback", async (req, res) => {
     // TODO: Update your database/order status here
     res.json({ success: true });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Callback handling failed" });
+    console.error("Error in /api/qpay/callback:", err.stack || err);
+    res
+      .status(500)
+      .json({ error: "Callback handling failed", details: err.message });
   }
 });
 
