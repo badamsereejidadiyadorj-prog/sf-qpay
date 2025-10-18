@@ -4,8 +4,18 @@ const express = require("express");
 const fetch = require("node-fetch"); // npm install node-fetch@2
 const btoa = require("btoa"); // npm install btoa
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "*", // or specify: ["https://yourdomain.com"]
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(bodyParser.json());
 
 const QPAY_API_URL = "https://merchant.qpay.mn/v2";
@@ -97,12 +107,15 @@ app.post("/api/qpay/callback", async (req, res) => {
 
     // You can verify payment by calling checkInvoice
     const token = await getQpayToken();
-    const qpayRes = await fetch(`${QPAY_API_URL}/invoice/${payload.invoice_id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const qpayRes = await fetch(
+      `${QPAY_API_URL}/invoice/${payload.invoice_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const invoiceData = await qpayRes.json();
     console.log("Verified Invoice:", invoiceData);
