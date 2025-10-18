@@ -1,7 +1,6 @@
 // server.js
 require("dotenv").config();
 const express = require("express");
-const fetch = require("node-fetch"); // npm install node-fetch@2
 const btoa = require("btoa"); // npm install btoa
 const bodyParser = require("body-parser");
 const cors = require("cors");
