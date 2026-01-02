@@ -152,11 +152,6 @@ export default function Home() {
                     <div>Тоо: {item.qty}</div>
                     {item.brand && <div>Брэнд: {item.brand}</div>}
                     {item.itemTag && <div>Төрөл: {item.itemTag}</div>}
-                    {item.description && (
-                      <p style={{ fontSize: 12, whiteSpace: "pre-line" }}>
-                        {item.description}
-                      </p>
-                    )}
                   </div>
                 </div>
               ));
