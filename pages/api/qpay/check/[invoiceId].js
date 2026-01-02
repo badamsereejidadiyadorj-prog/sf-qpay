@@ -23,3 +23,4 @@ module.exports = withCors(async function handler(req, res) {
       .json({ error: "Failed to check invoice", details: err.message });
   }
 });
+module.exports.default = module.exports;

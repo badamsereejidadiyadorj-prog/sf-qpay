@@ -38,3 +38,4 @@ module.exports = withCors(async function handler(req, res) {
       .json({ error: "Failed to create invoice", details: err.message });
   }
 });
+module.exports.default = module.exports;

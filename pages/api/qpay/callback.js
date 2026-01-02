@@ -30,3 +30,4 @@ module.exports = withCors(async function handler(req, res) {
       .json({ error: "Callback handling failed", details: err.message });
   }
 });
+module.exports.default = module.exports;
