@@ -1,6 +1,7 @@
+const withCors = require("../../../../lib/cors");
 const { getQpayToken, QPAY_API_URL } = require("../../../../lib/qpay");
 
-module.exports = async function handler(req, res) {
+module.exports = withCors(async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).end();
   try {
     const { invoiceId } = req.query;
@@ -21,4 +22,4 @@ module.exports = async function handler(req, res) {
       .status(500)
       .json({ error: "Failed to check invoice", details: err.message });
   }
-};
+});
