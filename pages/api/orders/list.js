@@ -1,6 +1,6 @@
-import supabase from "../../../lib/supabase";
+const supabase = require("../../../lib/supabase");
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).end();
 
   const { page = 1, limit = 10, search = "" } = req.query;
@@ -32,4 +32,6 @@ export default async function handler(req, res) {
     page: Number(page),
     limit: Number(limit),
   });
-}
+};
+
+module.exports.default = module.exports;
